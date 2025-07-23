@@ -1,6 +1,6 @@
 using System;
 
-namespace AtHash.Apps.DvtElevatorsEda.Console.Events.Interfaces;
+namespace AtHash.Apps.DvtElevatorsEda.Console.EventsHandling.Interfaces;
 
 public interface IEvent
 {
