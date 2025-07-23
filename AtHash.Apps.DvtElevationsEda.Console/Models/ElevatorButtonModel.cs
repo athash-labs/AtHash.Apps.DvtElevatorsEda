@@ -4,5 +4,5 @@ namespace AtHash.Apps.DvtElevatorsEda.Models;
 
 public class ElevatorButtonModel : ElevatorRequestButtonModel
 {
-
+    public FloorModel DestinationFloor { get; set; }
 }

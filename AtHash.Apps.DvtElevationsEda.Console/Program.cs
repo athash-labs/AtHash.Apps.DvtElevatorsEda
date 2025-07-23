@@ -1,3 +1,5 @@
-﻿Console.WriteLine("Hello, World!");
+﻿using System;
+
+Console.WriteLine("Hello, World!");
 
 Console.ReadLine();
