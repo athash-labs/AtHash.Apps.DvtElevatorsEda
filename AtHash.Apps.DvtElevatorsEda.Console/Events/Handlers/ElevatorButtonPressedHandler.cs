@@ -1,8 +1,8 @@
 using System;
 using System.Threading.Tasks;
-using AtHash.Apps.DvtElevationsEda.Console.Events.Handlers.Interfaces;
+using AtHash.Apps.DvtElevatorsEda.Console.Events.Handlers.Interfaces;
 
-namespace AtHash.Apps.DvtElevationsEda.Console.Events.Handlers;
+namespace AtHash.Apps.DvtElevatorsEda.Console.Events.Handlers;
 
 public class ElevatorButtonPressedHandler : IEventHandler<ElevatorButtonPressedEvent>
 {

@@ -1,5 +1,5 @@
-using AtHash.Apps.DvtElevationsEda.Console.Emunerations;
-using AtHash.Apps.DvtElevationsEda.Console.Models;
+using AtHash.Apps.DvtElevatorsEda.Console.Emunerations;
+using AtHash.Apps.DvtElevatorsEda.Console.Models;
 
 namespace AtHash.Apps.DvtElevatorsEda.Models;
 

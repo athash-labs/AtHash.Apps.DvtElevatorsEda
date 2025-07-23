@@ -1,7 +1,7 @@
-using AtHash.Apps.DvtElevationsEda.Console.Events.Interfaces;
+using AtHash.Apps.DvtElevatorsEda.Console.Events.Interfaces;
 using AtHash.Apps.DvtElevatorsEda.Models;
 
-namespace AtHash.Apps.DvtElevationsEda.Console.Events;
+namespace AtHash.Apps.DvtElevatorsEda.Console.Events;
 
 public record class FloorButtonPressedEvent(
     FloorButtonModel FloorButton,
