@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 using AtHash.Apps.DvtElevatorsEda.Console.EventsHandling.Interfaces;
 

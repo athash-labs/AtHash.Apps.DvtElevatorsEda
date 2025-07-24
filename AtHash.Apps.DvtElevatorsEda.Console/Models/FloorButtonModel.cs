@@ -5,5 +5,6 @@ namespace AtHash.Apps.DvtElevatorsEda.Models;
 
 public class FloorButtonModel : ElevatorRequestButtonModel
 {
+    public FloorModel Floor { get; set; }
     public FloorButtonDirectionEnum FloorButtonDirection { get; set; }
 }

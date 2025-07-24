@@ -1,6 +1,5 @@
-using System;
 using System.Threading.Tasks;
-using AtHash.Apps.DvtElevatorsEda.Console.Events.Handlers.Interfaces;
+using AtHash.Apps.DvtElevatorsEda.Console.EventsHandling.Interfaces;
 
 namespace AtHash.Apps.DvtElevatorsEda.Console.EventsHandling.Handlers;
 
