@@ -7,7 +7,7 @@ public class PassengerCollectionRequestedHander
 {
     public async Task HandleAsync(PassengerCollectionRequestedEvent evt)
     {
-        System.Console.WriteLine($"Handling: Floor button [{evt?.FloorButton?.Id}] on Floor: [{evt?.FloorButton?.Floor?.Id}] going [{evt?.FloorButton?.FloorButtonDirection}]");
+        System.Console.WriteLine($"Handling: Passenger [{evt?.Passenger?.Id}] collection request on Floor: [{evt?.Floor?.Id}]");
 
         //ATL: Handle the passenger collection requested event     
 
