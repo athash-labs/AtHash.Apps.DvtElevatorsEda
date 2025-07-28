@@ -3,8 +3,8 @@ using AtHash.Apps.DvtElevatorsEda.Models;
 
 namespace AtHash.Apps.DvtElevatorsEda.Console.EventsHandling.Events;
 
-public record class PassengerCollectedEvent(
+public record class PassengerElevatorRequestedEvent(
     PassengerModel Passenger,
-    FloorModel Floor,
-    ElevatorModel Elevator = null
+    FloorModel CurrentFloor,
+    FloorModel DestinationFloor
 ) : IEvent;

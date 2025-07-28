@@ -9,7 +9,7 @@ public class InMemoryEventBus : IEventBus
 {
     private readonly Dictionary<Type, List<object>> _handlers = new();
     
-    public async Task Subscribe<TEvent>(IEventHandler<TEvent> handler)
+    public async Task SubscribeAsync<TEvent>(IEventHandler<TEvent> handler)
         where TEvent : IEvent
     {
         // Finding the actual underlying type of the generic TEvent
@@ -38,5 +38,20 @@ public class InMemoryEventBus : IEventBus
                 await ((IEventHandler<TEvent>)handler).HandleAsync(evt);
             }
         }
+    }
+
+    internal void RegisterHandler<TEvent, THandler>(THandler handler)
+        where TEvent : IEvent
+        where THandler : IEventHandler<TEvent>
+    {
+        // Finding the actual underlying type of the generic TEvent
+        var eventType = typeof(TEvent);
+
+        if (!_handlers.ContainsKey(eventType))
+        {
+            _handlers[eventType] = new List<object>();
+        }
+
+        _handlers[eventType].Add(handler);
     }
 }
