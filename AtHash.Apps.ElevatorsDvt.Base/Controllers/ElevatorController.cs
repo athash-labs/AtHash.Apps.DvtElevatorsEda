@@ -1,4 +1,5 @@
-﻿using AtHash.Apps.ElevatorsDvt.Base.Enumerations;
+﻿using AtHash.Apps.ElevatorsDvt.Base.Controllers.Interfaces;
+using AtHash.Apps.ElevatorsDvt.Base.Enumerations;
 using AtHash.Apps.ElevatorsDvt.Base.EventHandling.Events;
 using AtHash.Apps.ElevatorsDvt.Base.EventHandling.Interfaces;
 using AtHash.Apps.ElevatorsDvt.Base.Models;
@@ -6,7 +7,7 @@ using System.Runtime.CompilerServices;
 
 namespace AtHash.Apps.ElevatorsDvt.Base.Controllers
 {
-    public class ElevatorController
+    public class ElevatorController : IElevatorController
     {
         private readonly IEventBus _eventBus;
         private readonly List<ElevatorModel> _elevators;
@@ -29,7 +30,7 @@ namespace AtHash.Apps.ElevatorsDvt.Base.Controllers
             _eventBus.Subscribe<InsideButtonPressedEvent>(HandleInsideButtonPress);
         }
 
-        private void HandleElevatorRequest(ElevatorRequestedEvent request)
+        public void HandleElevatorRequest(ElevatorRequestedEvent request)
         {
             // Find the nearest available elevator
             var elevator = FindNearestElevator(request.FloorNumber, request.ElevatorDirection);
@@ -50,7 +51,7 @@ namespace AtHash.Apps.ElevatorsDvt.Base.Controllers
             }
         }
 
-        private void HandleInsideButtonPress(InsideButtonPressedEvent request)
+        public void HandleInsideButtonPress(InsideButtonPressedEvent request)
         {
             var elevator = _elevators.FirstOrDefault(e => e.Id == request.ElevatorId);
             if (elevator != null)

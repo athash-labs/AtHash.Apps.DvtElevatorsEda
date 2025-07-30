@@ -4,11 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AtHash.Apps.ElevatorsDvt.Base.Enumerations
+namespace AtHash.Apps.ElevatorsDvt.Api.Tests.Controllers
 {
-    public enum ElevatorDirection
+    public class MaintenanceControllerTests
     {
-        GoingUp,
-        GoingDown
     }
 }
