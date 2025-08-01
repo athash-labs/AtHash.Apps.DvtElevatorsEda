@@ -1,4 +1,7 @@
 ﻿using AtHash.Apps.ElevatorsDvt.Base.Enumerations;
+using AtHash.Apps.ElevatorsDvt.Console.Services;
+using AtHash.Apps.ElevatorsDvt.Console.Services.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
 using System.Net.Http.Json;
 
 public class Program
@@ -110,5 +113,13 @@ public class Program
         {
             Console.WriteLine("Failed to select floor");
         }
+    }
+
+    public static void ConfigureServices(IServiceCollection services)
+    {
+        var httpClientBuilder = services.AddHttpClient<IElevatorService, ElevatorService>(client =>
+        {
+            client.BaseAddress = new Uri("https://localhost:5001/api/");
+        });
     }
 }

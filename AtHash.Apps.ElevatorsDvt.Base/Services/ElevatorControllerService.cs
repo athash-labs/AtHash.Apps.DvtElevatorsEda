@@ -56,8 +56,8 @@ public class ElevatorControllerService
         {
             elevator.RequestedFloors.Add(request.DestinationFloor);
             elevator.CurrentDirection = request.DestinationFloorId > elevator.CurrentFloorId
-                ? ElevatorDirection.GoingUp
-                : ElevatorDirection.GoingDown;
+                ? ElevatorDirectionEnum.GoingUp
+                : ElevatorDirectionEnum.GoingDown;
 
             MoveElevatorToFloor(elevator, request.DestinationFloorId);
 
@@ -69,14 +69,14 @@ public class ElevatorControllerService
         }
     }
 
-    private ElevatorModel FindNearestElevator(int floorNumber, ElevatorDirection direction)
+    private ElevatorModel FindNearestElevator(int floorNumber, ElevatorDirectionEnum direction)
     {
         // Simple algorithm to find the nearest available elevator
         return _elevators
             .Where(e => e.Status == ElevatorStatus.Idle ||
                        (e.CurrentDirection == direction &&
-                        ((direction == ElevatorDirection.GoingUp && e.CurrentFloorId <= floorNumber) ||
-                         (direction == ElevatorDirection.GoingDown && e.CurrentFloorId >= floorNumber))))
+                        ((direction == ElevatorDirectionEnum.GoingUp && e.CurrentFloorId <= floorNumber) ||
+                         (direction == ElevatorDirectionEnum.GoingDown && e.CurrentFloorId >= floorNumber))))
             .OrderBy(e => Math.Abs(e.CurrentFloorId - floorNumber))
             .FirstOrDefault();
     }
