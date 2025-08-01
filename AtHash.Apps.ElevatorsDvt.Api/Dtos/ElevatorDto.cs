@@ -10,6 +10,12 @@ namespace AtHash.Apps.ElevatorsDvt.Api.Dtos
         public FloorModel CurrentFloor { get; set; }
         public string Status { get; set; } = string.Empty;
         public int BuildingId { get; set; }
-        public List<int> PassengerIds { get; set; } = new List<int>();
+        public BuildingModel Building { get; set; }
+        public List<int> PassengerIds { get; set; } = [];
+        public List<int> PassengerIdsDown { get; set; } = [];
+        public List<int> PassengerIdsUp { get; set; } = [];
+        public int MaxCapacity { get; set; }
+        public int CurrentLoad => PassengerIds.Count;
+        public List<int> RequestedFloors { get; set; } = [];
     }
 }

@@ -21,5 +21,5 @@ public class ElevatorModel : BaseModel
     public ElevatorStatus Status { get; set; } = ElevatorStatus.Idle;
     public List<FloorModel> RequestedFloors { get; } = new List<FloorModel>();
     public List<int> RequestedFloorIds { get; } = new List<int>();
-    public ElevatorDirection? CurrentDirection { get; set; }
+    public ElevatorDirectionEnum CurrentDirection { get; set; }
 }

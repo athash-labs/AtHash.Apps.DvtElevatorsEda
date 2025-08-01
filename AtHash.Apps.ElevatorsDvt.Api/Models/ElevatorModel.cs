@@ -11,8 +11,9 @@ public class ElevatorModel : BaseModel
     public int BuildingId { get; set; }
     public BuildingModel Building { get; set; }
     public List<PassengerModel> Passengers { get; set; } = [];
-
     public int MaximumPassengers { get; set; }
+    public List<FloorModel> RequestedFloors { get; } = new List<FloorModel>();
+
     public bool IsOperational { get; set; }
     public ElevatorMotionStatusEnum MotionStatus { get; set; } = ElevatorMotionStatusEnum.Stationary;
     public bool IsInMotion { get; set; }
@@ -22,7 +23,6 @@ public class ElevatorModel : BaseModel
     public IList<ElevatorButtonModel> ElevatorButtons { get; set; }
     //public IList<FloorModel> DestinationFloors { get; set; }
 
-    public List<FloorModel> RequestedFloors { get; } = new List<FloorModel>();
     public List<int> RequestedFloorIds { get; } = new List<int>();
     public ElevatorDirectionEnum? CurrentDirection { get; set; }
 }

@@ -26,7 +26,7 @@ namespace AtHash.Apps.ElevatorsDvt.Api.Controllers
             return await _context.Buildings
                 .Include(b => b.Floors)
                 .Include(b => b.Elevators)
-                .Select(b => MapToBuildingDTO(b))
+                .Select(b => MapToBuildingDto(b))
                 .ToListAsync();
         }
 
@@ -43,7 +43,7 @@ namespace AtHash.Apps.ElevatorsDvt.Api.Controllers
                 return NotFound();
             }
 
-            return MapToBuildingDTO(building);
+            return MapToBuildingDto(building);
         }
 
         [HttpPost(Name = "PostBuilding")]
@@ -62,8 +62,8 @@ namespace AtHash.Apps.ElevatorsDvt.Api.Controllers
             return CreatedAtAction(nameof(GetBuilding), new { id = building.Id }, buildingDto);
         }
 
-        [HttpGet(Name = "MapToBuildingDTO")]
-        private BuildingDto MapToBuildingDTO(BuildingModel building)
+        [HttpGet(Name = "MapToBuildingDto")]
+        private BuildingDto MapToBuildingDto(BuildingModel building)
         {
             return new BuildingDto
             {

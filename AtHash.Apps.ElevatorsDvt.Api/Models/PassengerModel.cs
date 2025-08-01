@@ -2,8 +2,6 @@ namespace AtHash.Apps.ElevatorsDvt.Api.Models;
 
 public class PassengerModel : BaseModel
 {
-    public int Id { get; set; }
-    public string Name { get; set; } = string.Empty;
     public int CurrentFloorId { get; set; }
     public FloorModel CurrentFloor { get; set; }
     public int DestinationFloorId { get; set; }

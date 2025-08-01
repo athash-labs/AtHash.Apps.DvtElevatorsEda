@@ -4,6 +4,7 @@ using AtHash.Apps.ElevatorsDvt.Api.Enumerations;
 using AtHash.Apps.ElevatorsDvt.Api.Models;
 using AtHash.Apps.ElevatorsDvt.Api.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace AtHash.Apps.ElevatorsDvt.Api.Services
 {
@@ -16,13 +17,23 @@ namespace AtHash.Apps.ElevatorsDvt.Api.Services
             _context = context;
         }
 
-        public async Task<ElevatorDto> CallElevator(int floorId, int destinationFloor)
+        public async Task<ElevatorDto> CallElevator(int floorId, ElevatorDirectionEnum direction)
         {
             var floor = await _context.Floors.FindAsync(floorId);
 
             if (floor == null)
             {
                 throw new ArgumentException("Floor not found");
+            }
+
+            // Activate the appropriate button
+            if (direction == ElevatorDirectionEnum.GoingUp)
+            {
+                floor.UpButtonActive = true;
+            }
+            else
+            {
+                floor.DownButtonActive = true;
             }
 
             // Find the nearest available elevator
@@ -40,7 +51,7 @@ namespace AtHash.Apps.ElevatorsDvt.Api.Services
 
             var nearestElevator = availableElevators
                 .OrderBy(e => Math.Abs(e.CurrentFloorId - floor.FloorNumber))
-                .First();
+                .FirstOrDefault();
 
             nearestElevator.Status = floor.Id > nearestElevator.CurrentFloor.Id
                 ? ElevatorStatusEnum.MovingUp
@@ -48,7 +59,7 @@ namespace AtHash.Apps.ElevatorsDvt.Api.Services
 
             await _context.SaveChangesAsync();
 
-            return MapToElevatorDTO(nearestElevator);
+            return MapToElevatorDto(nearestElevator);
         }
 
         public async Task<List<ElevatorDto>> GetElevatorsByBuilding(int buildingId)
@@ -57,7 +68,7 @@ namespace AtHash.Apps.ElevatorsDvt.Api.Services
                 .Where(e => e.BuildingId == buildingId)
                 .ToListAsync();
 
-            return elevators.Select(MapToElevatorDTO).ToList();
+            return elevators.Select(MapToElevatorDto).ToList();
         }
 
         public async Task<ElevatorDto> UpdateElevatorStatus(int elevatorId, ElevatorStatusEnum status)
@@ -72,10 +83,10 @@ namespace AtHash.Apps.ElevatorsDvt.Api.Services
             elevator.Status = status;
             await _context.SaveChangesAsync();
 
-            return MapToElevatorDTO(elevator);
+            return MapToElevatorDto(elevator);
         }
 
-        private ElevatorDto MapToElevatorDTO(ElevatorModel elevator)
+        private ElevatorDto MapToElevatorDto(ElevatorModel elevator)
         {
             return new ElevatorDto
             {
@@ -87,6 +98,50 @@ namespace AtHash.Apps.ElevatorsDvt.Api.Services
                 BuildingId = elevator.BuildingId,
                 PassengerIds = elevator.Passengers.Select(p => p.Id).ToList()
             };
+        }
+
+        public async Task<ElevatorDto> PressFloorButton(int elevatorId, int floorNumber)
+        {
+            var elevator = await _context.Elevators
+                .Include(e => e.Building)
+                .ThenInclude(b => b.Floors)
+                .FirstOrDefaultAsync(e => e.Id == elevatorId);
+
+            if (elevator == null)
+            {
+                throw new ArgumentException("Elevator not found");
+            }
+
+            // Verify the floor exists in the building
+            var buildingFloorNumbers = elevator.Building
+                .Floors
+                .Select(f => f.FloorNumber)
+                .ToList();
+
+            if (!buildingFloorNumbers.Contains(floorNumber))
+            {
+                throw new ArgumentException("Invalid floor number for this building");
+            }
+
+            // Add to requested floors if not already there
+            if (!elevator.RequestedFloorIds.Contains(floorNumber))
+            {
+                elevator.RequestedFloorIds.Add(floorNumber);
+
+                // Sort based on current direction
+                if (elevator.Status == ElevatorStatusEnum.MovingUp)
+                {
+                    elevator.RequestedFloors.Sort();
+                }
+                else if (elevator.Status == ElevatorStatusEnum.MovingDown)
+                {
+                    elevator.RequestedFloorIds.Sort((a, b) => b.CompareTo(a));
+                }
+            }
+
+            await _context.SaveChangesAsync();
+
+            return MapToElevatorDto(elevator);
         }
     }
 }

@@ -63,7 +63,8 @@ namespace AtHash.Apps.ElevatorsDvt.Api.Controllers
         public async Task<ActionResult<PassengerDto>> CallElevator([FromBody] PassengerCallRequest request)
         {
             var floor = await _context.Floors
-                .FirstOrDefaultAsync(f => f.FloorNumber == request.CurrentFloorId && f.BuildingId == request.BuildingId);
+                .FirstOrDefaultAsync(f => f.FloorNumber == request.CurrentFloorId
+                    && f.BuildingId == request.BuildingId);
 
             if (floor == null)
             {
@@ -83,6 +84,59 @@ namespace AtHash.Apps.ElevatorsDvt.Api.Controllers
 
             var passengerDTO = MapToPassengerDto(passenger);
             return CreatedAtAction(nameof(GetPassenger), new { id = passenger.Id }, passengerDTO);
+        }
+        [HttpPost("call-down")]
+        public async Task<ActionResult<PassengerDto>> CallElevatorDown([FromBody] PassengerCallRequest request)
+        {
+            var floor = await _context.Floors
+                .FirstOrDefaultAsync(f => f.FloorNumber == request.CurrentFloorId
+                    && f.BuildingId == request.BuildingId);
+
+            if (floor == null)
+            {
+                return BadRequest("Floor not found in the specified building");
+            }
+
+            var passenger = new PassengerModel
+            {
+                Name = request.Name ?? "Anonymous",
+                CurrentFloor = request.CurrentFloor,
+                DestinationFloor = request.DestinationFloor,
+                CallTime = DateTime.UtcNow
+            };
+
+            floor.WaitingPassengersDown.Add(passenger);
+            await _context.SaveChangesAsync();
+
+            var passengerDto = MapToPassengerDto(passenger);
+            return CreatedAtAction(nameof(GetPassenger), new { id = passenger.Id }, passengerDto);
+        }
+
+        [HttpPost("call-up")]
+        public async Task<ActionResult<PassengerDto>> CallElevatorUp([FromBody] PassengerCallRequest request)
+        {
+            var floor = await _context.Floors
+                .FirstOrDefaultAsync(f => f.FloorNumber == request.CurrentFloorId
+                    && f.BuildingId == request.BuildingId);
+
+            if (floor == null)
+            {
+                return BadRequest("Floor not found in the specified building");
+            }
+
+            var passenger = new PassengerModel
+            {
+                Name = request.Name ?? "Anonymous",
+                CurrentFloor = request.CurrentFloor,
+                DestinationFloor = request.DestinationFloor,
+                CallTime = DateTime.UtcNow
+            };
+
+            floor.WaitingPassengersUp.Add(passenger);
+            await _context.SaveChangesAsync();
+
+            var passengerDto = MapToPassengerDto(passenger);
+            return CreatedAtAction(nameof(GetPassenger), new { id = passenger.Id }, passengerDto);
         }
 
         private PassengerDto MapToPassengerDto(PassengerModel passenger)
